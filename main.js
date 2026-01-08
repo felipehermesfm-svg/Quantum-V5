@@ -17,7 +17,7 @@ function createMainWindow() {
 
   // COLOQUE AQUI O LINK QUE FUNCIONA NO SEU NAVEGADOR
   // Remova qualquer "/" no final do link
-  const vercelUrl = 'https://quantum-v5-hcmjxyblf-felipe-hermes-projects.vercel.app/';
+  const vercelUrl = 'https://quantum-v5.vercel.app';
 
   win.loadURL(vercelUrl).catch((err) => {
     console.error("Erro ao carregar URL:", err);

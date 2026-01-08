@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron');
-const path = require('path');
 
 function createMainWindow() {
   const win = new BrowserWindow({
@@ -7,6 +6,7 @@ function createMainWindow() {
     width: 1280,
     height: 800,
     backgroundColor: '#000000',
+    show: false, // Só mostra quando carregar para evitar tela branca/404 rápido
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -15,22 +15,26 @@ function createMainWindow() {
 
   win.setMenuBarVisibility(false);
 
-  // COLOQUE AQUI O LINK QUE FUNCIONA NO SEU NAVEGADOR
-  // Remova qualquer "/" no final do link
+  // LINK DA VERCEL (Certifique-se de que é o link do "Production Deployment")
   const vercelUrl = 'https://quantum-v5.vercel.app';
 
-  win.loadURL(vercelUrl).catch((err) => {
-    console.error("Erro ao carregar URL:", err);
+  win.loadURL(vercelUrl);
+
+  // Só mostra a janela quando o site responder com sucesso
+  win.once('ready-to-show', () => {
+    win.show();
+  });
+
+  // Se der erro 404 ou falha de rede, ele avisa no terminal do VS Code
+  win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.log(`Erro de carregamento: ${errorDescription} (${errorCode})`);
+    if (errorCode === -105 || errorCode === -102) {
+      setTimeout(() => win.loadURL(vercelUrl), 5000);
+    }
   });
 }
 
-app.whenReady().then(() => {
-  createMainWindow();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
-  });
-});
+app.whenReady().then(createMainWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

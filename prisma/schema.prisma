@@ -1,0 +1,49 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TradingDay {
+  id           String   @id @default(uuid())
+  date         DateTime @unique
+  resultadoDia Float    @default(0)
+  mood         String?
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  trades       Trade[]
+
+  @@map("trading_days")
+}
+
+model Trade {
+  id         String     @id @default(uuid())
+  symbol     String
+  result     Float
+  strategy   String
+  direction  String     @default("LONG")
+  riskPct    Float?
+  rrRatio    Float?
+  entryTime  DateTime?
+  exitTime   DateTime?
+  notes      String?
+  createdAt  DateTime   @default(now())
+
+  tradeDayId String
+  tradeDay   TradingDay @relation(fields: [tradeDayId], references: [id])
+
+  @@map("trades")
+}
+
+model Settings {
+  id             Int   @id @default(1)
+  initialCapital Float @default(0)
+
+  @@map("settings")
+}

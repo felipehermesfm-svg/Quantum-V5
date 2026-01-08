@@ -1,9 +1,7 @@
 {
   "name": "quantum-v5",
   "version": "1.0.0",
-  "description": "Trading Journal Quantum V5",
   "main": "main.js",
-  "author": "Felipe",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -31,9 +29,6 @@
   "build": {
     "appId": "com.quantum.v5",
     "productName": "Quantum V5",
-    "directories": {
-      "output": "dist"
-    },
     "win": {
       "target": "portable"
     }

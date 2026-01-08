@@ -14,7 +14,7 @@ function createWindow() {
   });
 
   // COLOQUE AQUI O LINK QUE A VERCEL TE DAR
-  win.loadURL('quantum-v5.vercel.app'
+  win.loadURL(quantum-v5.vercel.app
 ); 
 }
 
